@@ -17,6 +17,12 @@ const homeContentSchema = new mongoose.Schema({
       title: String,
       description: String,
     }
+  ],
+  partners: [
+    {
+      name: String,
+      image: String
+    }
   ]
 }, {
   timestamps: true

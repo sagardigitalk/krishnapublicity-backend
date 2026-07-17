@@ -18,7 +18,8 @@ export const getHomeContent = async (req, res) => {
         ],
         services: [
           { title: 'Outdoor Advertising', description: 'Billboards, Transit, and more.' }
-        ]
+        ],
+        partners: []
       });
     }
     res.json(content);
@@ -34,6 +35,7 @@ export const updateHomeContent = async (req, res) => {
       content.hero = req.body.hero || content.hero;
       content.stats = req.body.stats || content.stats;
       content.services = req.body.services || content.services;
+      content.partners = req.body.partners || content.partners;
       
       const updatedContent = await content.save();
       res.json(updatedContent);

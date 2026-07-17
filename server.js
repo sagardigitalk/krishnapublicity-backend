@@ -6,10 +6,10 @@ import connectDB from './config/db.js';
 
 dns.setServers(['1.1.1.1', '8.8.8.8']);
 
+import path from 'path';
+
 // Routes
-import authRoutes from './routes/authRoutes.js';
-import homeRoutes from './routes/homeRoutes.js';
-import aboutRoutes from './routes/aboutRoutes.js';
+import routes from './routes/index.js';
 
 dotenv.config();
 
@@ -24,9 +24,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // API Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/home', homeRoutes);
-app.use('/api/about', aboutRoutes);
+app.use('/api', routes);
+
+// Make uploads folder static
+const __dirname = path.resolve();
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Basic route
 app.get('/', (req, res) => {

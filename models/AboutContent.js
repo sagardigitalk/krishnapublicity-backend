@@ -10,6 +10,13 @@ const aboutContentSchema = new mongoose.Schema({
       image: String,
       bio: String
     }
+  ],
+  stats: [
+    {
+      label: String,
+      value: String,
+      icon: String
+    }
   ]
 }, {
   timestamps: true
