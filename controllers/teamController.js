@@ -1,12 +1,5 @@
 import AboutContent from '../models/AboutContent.js';
 
-const defaultStats = [
-  { label: 'Years of Excellence', value: '10+', icon: 'users' },
-  { label: 'Clients Served', value: '5000+', icon: 'check' },
-  { label: 'Successful Campaigns', value: '3600+', icon: 'award' },
-  { label: 'Client Satisfaction', value: '98%', icon: 'zap' }
-];
-
 const defaultTeamHeader = {
   subtitle: 'Welcome to Krishna Publicity',
   title: "Gujarat's Most Reliable Advertising Family for Outdoor Campaigns",
@@ -34,16 +27,14 @@ const defaultTeam = [
   }
 ];
 
-export const getAboutContent = async (req, res) => {
+// Get Team Header & Members
+export const getTeamContent = async (req, res) => {
   try {
     let content = await AboutContent.findOne();
     if (!content) {
       content = await AboutContent.create({
-        title: 'Where Creativity Meets Measurable Impact.',
-        description: 'Krishna Publicity isn’t just an advertising agency. We are architects of brand experiences, meticulously designing campaigns that resonate and convert.',
         teamHeader: defaultTeamHeader,
-        team: defaultTeam,
-        stats: defaultStats
+        team: defaultTeam
       });
     } else {
       let modified = false;
@@ -51,55 +42,48 @@ export const getAboutContent = async (req, res) => {
         content.teamHeader = defaultTeamHeader;
         modified = true;
       }
-
-      if (content.team && content.team.length > 0) {
-        content.team = content.team.map((member, index) => {
-          if (!member.image || member.image.includes('founder')) {
-            modified = true;
-            const fallbackImages = ['/main1.jpg', '/main2.jpg', '/main3.jpg'];
-            return {
-              ...member.toObject(),
-              image: fallbackImages[index % fallbackImages.length]
-            };
-          }
-          return member;
-        });
-      } else {
+      if (!content.team || content.team.length === 0) {
         content.team = defaultTeam;
         modified = true;
       }
-
-      if (!content.stats || content.stats.length === 0) {
-        content.stats = defaultStats;
-        modified = true;
-      }
-
       if (modified) {
         await content.save();
       }
     }
-
-    res.json(content);
+    res.json({
+      teamHeader: content.teamHeader,
+      team: content.team
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 };
 
-export const updateAboutContent = async (req, res) => {
+// Update Team Header & Members
+export const updateTeamContent = async (req, res) => {
   try {
     let content = await AboutContent.findOne();
     if (!content) {
       content = new AboutContent({});
     }
 
-    if (req.body.title !== undefined) content.title = req.body.title;
-    if (req.body.description !== undefined) content.description = req.body.description;
-    if (req.body.teamHeader !== undefined) content.teamHeader = req.body.teamHeader;
-    if (req.body.team !== undefined) content.team = req.body.team;
-    if (req.body.stats !== undefined) content.stats = req.body.stats;
+    if (req.body.teamHeader !== undefined) {
+      content.teamHeader = {
+        subtitle: req.body.teamHeader.subtitle || '',
+        title: req.body.teamHeader.title || '',
+        description: req.body.teamHeader.description || ''
+      };
+    }
+
+    if (req.body.team !== undefined && Array.isArray(req.body.team)) {
+      content.team = req.body.team;
+    }
 
     const updatedContent = await content.save();
-    res.json(updatedContent);
+    res.json({
+      teamHeader: updatedContent.teamHeader,
+      team: updatedContent.team
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
