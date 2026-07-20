@@ -9,6 +9,9 @@ import hoardingRoutes from './hoardingRoutes.js';
 import brandingRoutes from './brandingRoutes.js';
 import graphicsRoutes from './graphicsRoutes.js';
 import uploadRoutes from './uploadRoutes.js';
+import incomeRoutes from './incomeRoutes.js';
+import expenseRoutes from './expenseRoutes.js';
+import printingRoutes from './printingRoutes.js';
 
 const router = express.Router();
 
@@ -22,5 +25,8 @@ router.use('/hoardings', hoardingRoutes);
 router.use('/branding', brandingRoutes);
 router.use('/graphics', graphicsRoutes);
 router.use('/upload', uploadRoutes);
+router.use('/income', incomeRoutes);
+router.use('/expense', expenseRoutes);
+router.use('/printing', printingRoutes);
 
 export default router;
