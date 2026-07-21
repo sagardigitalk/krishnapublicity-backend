@@ -36,7 +36,7 @@ export const deleteImage = (req, res) => {
     // Normalize path and prevent directory traversal
     const normalizedPath = path.normalize(relativePath);
     if (!normalizedPath.startsWith('uploads') && !normalizedPath.startsWith('uploads\\')) {
-      return res.status(400).json({ message: 'Invalid image path' });
+      return res.status(200).json({ message: 'Static image reference cleared. File kept on disk.' });
     }
 
     const fullPath = path.join(process.cwd(), normalizedPath);

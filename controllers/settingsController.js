@@ -52,6 +52,9 @@ export const updateSettings = async (req, res) => {
         twitter: req.body.socialLinks.twitter || ''
       };
     }
+    if (req.body.servicesCards !== undefined) {
+      settings.servicesCards = req.body.servicesCards;
+    }
 
     const updatedSettings = await settings.save();
     res.json(updatedSettings);

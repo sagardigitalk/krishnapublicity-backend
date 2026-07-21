@@ -19,6 +19,23 @@ const settingsSchema = new mongoose.Schema({
     instagram: { type: String, default: 'https://instagram.com/krishnapublicity_surat' },
     facebook: { type: String, default: 'https://www.facebook.com/krishna.pubgps' },
     twitter: { type: String, default: 'https://twitter.com/Mrsanju_krishna' }
+  },
+  servicesCards: {
+    hoardings: {
+      title: { type: String, default: 'OUTDOOR HOARDINGS' },
+      description: { type: String, default: 'High-impact premium billboard displays positioned in strategic, high-traffic prime locations.' },
+      image: { type: String, default: '/serviceimage/hordingimage.jpg' }
+    },
+    branding: {
+      title: { type: String, default: 'BRAND IDENTITY' },
+      description: { type: String, default: 'Distinctive logo design, complete branding suites, and brand guidelines that define your presence.' },
+      image: { type: String, default: '/serviceimage/brandingmian.jpg' }
+    },
+    graphics: {
+      title: { type: String, default: 'CREATIVE DESIGN' },
+      description: { type: String, default: 'State-of-the-art graphic illustrations, promotional ads, and immersive visual campaigns.' },
+      image: { type: String, default: '/serviceimage/graphicmain1.jpg' }
+    }
   }
 }, {
   timestamps: true
