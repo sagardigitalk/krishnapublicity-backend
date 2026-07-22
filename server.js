@@ -26,9 +26,8 @@ app.use(express.urlencoded({ extended: true }));
 // API Routes
 app.use('/api', routes);
 
-// Make uploads folder static
+// (Uploads folder has been removed and migrated to Cloudinary)
 const __dirname = path.resolve();
-app.use('/uploads', express.static(path.join(__dirname, '/uploads')));
 
 // Basic route
 app.get('/', (req, res) => {
@@ -40,3 +39,4 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+// Nodemon restart trigger

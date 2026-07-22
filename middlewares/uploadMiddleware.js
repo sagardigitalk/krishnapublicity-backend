@@ -1,37 +1,31 @@
 import multer from 'multer';
+import { CloudinaryStorage } from 'multer-storage-cloudinary';
+import { v2 as cloudinary } from 'cloudinary';
 import path from 'path';
+import dotenv from 'dotenv';
 
-// Setup storage engine
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'uploads/');
-  },
-  filename(req, file, cb) {
-    cb(
-      null,
-      `${file.fieldname}-${Date.now()}${path.extname(file.originalname)}`
-    );
+dotenv.config();
+
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
+
+// Setup Cloudinary storage engine
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: 'krishna-publicity', // folder name in your cloudinary
+    allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg'],
+    public_id: (req, file) => `${file.fieldname}-${Date.now()}`,
   },
 });
 
-// Check file type
-function checkFileType(file, cb) {
-  const filetypes = /jpg|jpeg|png|webp|gif|svg/;
-  const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-  const mimetype = filetypes.test(file.mimetype);
-
-  if (extname && mimetype) {
-    return cb(null, true);
-  } else {
-    cb('Images only!');
-  }
-}
-
 const upload = multer({
-  storage,
-  fileFilter: function (req, file, cb) {
-    checkFileType(file, cb);
-  },
+  storage: storage,
+  // Note: Cloudinary handles file checking via allowed_formats
 });
 
 export default upload;
