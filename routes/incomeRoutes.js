@@ -1,7 +1,10 @@
 import express from 'express';
-import { getIncomes, createIncome, deleteIncome, getIncomeById, updateIncome } from '../controllers/incomeController.js';
+import { getIncomes, createIncome, deleteIncome, getIncomeById, updateIncome, downloadIncomeReportPDF, downloadIncomeBillPDF } from '../controllers/incomeController.js';
 
 const router = express.Router();
+
+router.get('/pdf/report', downloadIncomeReportPDF);
+router.get('/pdf/bill/:id', downloadIncomeBillPDF);
 
 router.route('/')
   .get(getIncomes)

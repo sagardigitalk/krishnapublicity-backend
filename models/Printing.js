@@ -11,6 +11,9 @@ const printingSchema = new mongoose.Schema({
   amount: {
     type: Number,
     default: 0,
+  },
+  billNumber: {
+    type: String,
   }
 }, { timestamps: true });
 

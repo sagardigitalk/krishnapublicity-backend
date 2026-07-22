@@ -43,6 +43,7 @@ export const getAboutContent = async (req, res) => {
         description: 'Krishna Publicity isn’t just an advertising agency. We are architects of brand experiences, meticulously designing campaigns that resonate and convert.',
         teamHeader: defaultTeamHeader,
         team: defaultTeam,
+        aboutTeam: defaultTeam,
         stats: defaultStats
       });
     } else {
@@ -52,8 +53,8 @@ export const getAboutContent = async (req, res) => {
         modified = true;
       }
 
-      if (content.team && content.team.length > 0) {
-        content.team = content.team.map((member, index) => {
+      if (content.aboutTeam && content.aboutTeam.length > 0) {
+        content.aboutTeam = content.aboutTeam.map((member, index) => {
           if (!member.image || member.image.includes('founder')) {
             modified = true;
             const fallbackImages = ['/main1.jpg', '/main2.jpg', '/main3.jpg'];
@@ -65,7 +66,11 @@ export const getAboutContent = async (req, res) => {
           return member;
         });
       } else {
-        content.team = defaultTeam;
+        if (content.team && content.team.length > 0) {
+          content.aboutTeam = content.team;
+        } else {
+          content.aboutTeam = defaultTeam;
+        }
         modified = true;
       }
 
@@ -79,7 +84,9 @@ export const getAboutContent = async (req, res) => {
       }
     }
 
-    res.json(content);
+    const responseData = content.toObject ? content.toObject() : content;
+    responseData.team = responseData.aboutTeam;
+    res.json(responseData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -95,11 +102,14 @@ export const updateAboutContent = async (req, res) => {
     if (req.body.title !== undefined) content.title = req.body.title;
     if (req.body.description !== undefined) content.description = req.body.description;
     if (req.body.teamHeader !== undefined) content.teamHeader = req.body.teamHeader;
-    if (req.body.team !== undefined) content.team = req.body.team;
+    if (req.body.team !== undefined) content.aboutTeam = req.body.team;
     if (req.body.stats !== undefined) content.stats = req.body.stats;
 
     const updatedContent = await content.save();
-    res.json(updatedContent);
+    
+    const responseData = updatedContent.toObject ? updatedContent.toObject() : updatedContent;
+    responseData.team = responseData.aboutTeam;
+    res.json(responseData);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

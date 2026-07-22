@@ -1,6 +1,10 @@
 import mongoose from 'mongoose';
 
 const incomeSchema = new mongoose.Schema({
+  billNumber: {
+    type: String,
+    unique: true,
+  },
   productName: {
     type: String,
     required: true,

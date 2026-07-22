@@ -22,6 +22,9 @@ const expenseSchema = new mongoose.Schema({
   pendingAmount: {
     type: Number,
     default: 0,
+  },
+  billNumber: {
+    type: String,
   }
 }, { timestamps: true });
 
